@@ -1,0 +1,140 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.speed-meter {
+    margin: 20px 0;
+}
+
+.gauge {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #eee;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gauge-inner {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gauge-value {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+}
+
+.gauge-unit {
+    font-size: 14px;
+    color: #666;
+}
+
+.test-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    flex: 1;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.results {
+    margin-top: 20px;
+    text-align: left;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.result-item {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.label {
+    font-weight: bold;
+    width: 100px;
+    display: inline-block;
+}
+
+.status-message {
+    margin-top: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+#pingBtn {
+    background-color: #2196F3;
+}
+
+#pingBtn:hover {
+    background-color: #0b7dda;
+}
+
+#downloadBtn {
+    background-color: #4CAF50;
+}
+
+#downloadBtn:hover {
+    background-color: #45a049;
+}
+
+#uploadBtn {
+    background-color: #ff9800;
+}
+
+#uploadBtn:hover {
+    background-color: #e68a00;
+}

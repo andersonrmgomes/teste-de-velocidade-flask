@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Velocidade de Rede</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Teste de Velocidade de Rede</h1>
+        
+        <div class="speed-meter">
+            <div class="gauge">
+                <div class="gauge-inner">
+                    <div class="gauge-value">0</div>
+                    <div class="gauge-unit">Mbps</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-controls">
+            <button id="pingBtn" class="btn">Medir Ping</button>
+            <button id="downloadBtn" class="btn">Testar Download</button>
+            <button id="uploadBtn" class="btn">Testar Upload</button>
+        </div>
+        
+        <div class="results">
+            <div class="result-item">
+                <span class="label">Ping:</span>
+                <span id="pingResult">--</span>
+                <span class="unit">ms</span>
+            </div>
+            <div class="result-item">
+                <span class="label">Download:</span>
+                <span id="downloadResult">--</span>
+                <span class="unit">Mbps</span>
+            </div>
+            <div class="result-item">
+                <span class="label">Upload:</span>
+                <span id="uploadResult">--</span>
+                <span class="unit">Mbps</span>
+            </div>
+        </div>
+        
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
