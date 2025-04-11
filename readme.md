@@ -23,18 +23,21 @@ Este projeto é um sistema simples de teste de velocidade de internet (download,
 O objetivo deste projeto é criar uma ferramenta educacional e funcional para medir a velocidade da internet. O sistema realiza os seguintes testes:
 
 1. **Ping**: Mede a latência (tempo de resposta) entre o cliente e o servidor.
-2. **Download**: Mede a velocidade ao baixar um arquivo gerado pelo servidor.
-3. **Upload**: Mede a velocidade ao enviar um arquivo do cliente para o servidor.
+2. **Download**: Mede a velocidade ao baixar um arquivo gerado pelo servidor diretamente na memória, utilizando buffers (`BytesIO`).
+3. **Upload**: Mede a velocidade ao enviar um arquivo do cliente para o servidor, também utilizando buffers em memória.
 
 Os resultados são exibidos em uma interface web simples, que pode ser acessada localmente.
+
+Essa abordagem elimina o uso de arquivos temporários no disco, garantindo maior eficiência e compatibilidade com diferentes sistemas operacionais.
+
 
 ---
 
 ## 🚀 **Funcionalidades**
 
 - Medir a latência da rede (ping).
-- Testar a velocidade de download.
-- Testar a velocidade de upload.
+- Testar a velocidade de download utilizando buffers em memória.
+- Testar a velocidade de upload utilizando buffers em memória.
 - Interface web responsiva e fácil de usar.
 - Resultados exibidos em tempo real.
 
@@ -107,7 +110,7 @@ teste-de-velocidade-flask/
 │ └── script.js # Lógica do frontend em JavaScript
 ├── templates/
 │ └── index.html # Página HTML principal
-└── test_files/ # Diretório para arquivos temporários usados nos testes
+└── test_files/ # Diretório para arquivos temporários usados nos testes (não utilizado com buffers)
 ~~~~
 
 ---
@@ -119,6 +122,8 @@ As principais tecnologias utilizadas neste projeto são:
 ### Backend:
 - [Python](https://www.python.org/)
 - [Flask](https://flask.palletsprojects.com/)
+- [Numpy](https://numpy.org/) (para manipulação eficiente de dados)
+- [BytesIO](https://docs.python.org/3/library/io.html#io.BytesIO) (para trabalhar com buffers em memória)
 
 ### Frontend:
 - HTML5, CSS3 e JavaScript

@@ -4,27 +4,12 @@ import os
 import random
 import string
 import numpy as np
+import io
 
 app = Flask(__name__)
 
-# Diretório para armazenar o arquivo de teste
-TEST_FILE_DIR = 'test_files'
-if not os.path.exists(TEST_FILE_DIR):
-    os.makedirs(TEST_FILE_DIR)
-
 # Tamanho do arquivo de teste em bytes (100 MB)
 TEST_FILE_SIZE = 100 * 1024 * 1024
-
-# Gerar um arquivo de teste com zeros (mais eficiente que dados aleatórios)
-def generate_test_file(file_path, size):
-    with open(file_path, 'wb') as f:
-        # Criar um array de zeros e escrevê-lo no arquivo
-        zeros = np.zeros(min(size, 1024 * 1024), dtype=np.uint8)
-        remaining = size
-        while remaining > 0:
-            write_size = min(remaining, zeros.size)
-            f.write(zeros[:write_size].tobytes())
-            remaining -= write_size
 
 @app.route('/')
 def index():
@@ -34,32 +19,46 @@ def index():
 def download_test():
     # Gerar um nome de arquivo único
     file_name = ''.join(random.choices(string.ascii_letters + string.digits, k=10)) + '.bin'
-    file_path = os.path.join(TEST_FILE_DIR, file_name)
     
-    # Gerar o arquivo de teste
-    generate_test_file(file_path, TEST_FILE_SIZE)
+    # Criar buffer em memória
+    buffer = io.BytesIO()
     
-    # Enviar o arquivo
-    return send_file(file_path, as_attachment=True)
+    # Gerar conteúdo do arquivo diretamente no buffer
+    chunk_size = 1024 * 1024  # 1 MB por chunk
+    chunks = TEST_FILE_SIZE // chunk_size
+    remainder = TEST_FILE_SIZE % chunk_size
+    
+    # Preencher o buffer com zeros
+    zeros = np.zeros(chunk_size, dtype=np.uint8).tobytes()
+    for _ in range(chunks):
+        buffer.write(zeros)
+    if remainder > 0:
+        buffer.write(np.zeros(remainder, dtype=np.uint8).tobytes())
+    
+    buffer.seek(0)  # Resetar posição do buffer
+    
+    # Enviar o buffer como arquivo
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name=file_name,
+        mimetype='application/octet-stream'
+    )
 
 @app.route('/upload_test', methods=['POST'])
 def upload_test():
     start_time = time.time()
     file = request.files['file']
     
-    # Salvar o arquivo temporariamente
-    temp_path = os.path.join(TEST_FILE_DIR, 'temp_upload.bin')
-    file.save(temp_path)
+    # Usar buffer em memória para o upload
+    file_buffer = io.BytesIO()
+    file.save(file_buffer)
+    file_buffer.seek(0)
     
-    # Calcular o tamanho do arquivo
-    file_size = os.path.getsize(temp_path)
-    
-    # Calcular o tempo e a velocidade
+    # Calcular tamanho e velocidade
+    file_size = len(file_buffer.getvalue())
     upload_time = time.time() - start_time
     upload_speed = (file_size * 8) / upload_time / 1_000_000  # Mbps
-    
-    # Limpar arquivo temporário
-    os.remove(temp_path)
     
     return jsonify({
         'upload_speed': round(upload_speed, 2),
@@ -86,13 +85,9 @@ def measure_download():
 @app.route('/ping_test')
 def ping_test():
     start_time = time.time()
-    # Simula um pequeno atraso de processamento
-    time.sleep(0.001)
+    time.sleep(0.001)  # Simula processamento mínimo
     latency = (time.time() - start_time) * 1000  # em ms
-    
-    return jsonify({
-        'ping': round(latency, 2)
-    })
+    return jsonify({'ping': round(latency, 2)})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
