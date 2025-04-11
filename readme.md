@@ -158,7 +158,7 @@ Se tiver dúvidas ou sugestões, entre em contato:
 
 - Nome: Anderson Gomes
 - Email: andersonrmgomes@msn.com
-- GitHub: [seu-usuario](https://github.com/andersonrmgomes)
+- GitHub: [andersonrmgomes](https://github.com/andersonrmgomes)
 
 ---
 
